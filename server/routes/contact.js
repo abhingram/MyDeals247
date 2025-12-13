@@ -60,6 +60,11 @@ const createTransporter = () => {
 router.post('/', async (req, res) => {
   try {
     const { name, email, subject, message } = req.body;
+    
+    // Log environment check
+    console.log('📧 Contact form submission received');
+    console.log('EMAIL_USER:', process.env.EMAIL_USER ? '✅ Set' : '❌ Missing');
+    console.log('EMAIL_PASSWORD:', process.env.EMAIL_PASSWORD ? '✅ Set' : '❌ Missing');
 
     // Validate required fields
     if (!name || !email || !subject || !message) {
@@ -141,6 +146,7 @@ router.post('/', async (req, res) => {
 
     // Send email
     const transporter = createTransporter();
+    console.log('📤 Attempting to send email...');
     await transporter.sendMail(mailOptions);
 
     console.log(`✅ Contact form email sent from ${email}`);
@@ -152,6 +158,11 @@ router.post('/', async (req, res) => {
 
   } catch (error) {
     console.error('❌ Error sending contact form email:', error);
+    console.error('Error details:', {
+      message: error.message,
+      code: error.code,
+      command: error.command
+    });
     res.status(500).json({
       success: false,
       message: 'Failed to send message. Please try again or email us directly at D247Online@outlook.com'

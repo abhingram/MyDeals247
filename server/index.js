@@ -1,6 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import dealsRoutes from './routes/deals.js';
 import categoriesRoutes from './routes/categories.js';
 import storesRoutes from './routes/stores.js';
@@ -18,8 +20,21 @@ import trustRoutes from './routes/trust.js';
 import contactRoutes from './routes/contact.js';
 import { startNotificationScheduler } from './services/notificationScheduler.js';
 
-// Load environment variables
-dotenv.config();
+// Get current directory for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Load environment variables from server/.env
+const envPath = path.join(__dirname, '.env');
+dotenv.config({ path: envPath });
+
+console.log('🔧 Environment Configuration:');
+console.log('   ENV file path:', envPath);
+console.log('   PORT:', process.env.PORT || 'NOT SET');
+console.log('   DB_HOST:', process.env.DB_HOST || 'NOT SET');
+console.log('   EMAIL_USER:', process.env.EMAIL_USER || 'NOT SET');
+console.log('   EMAIL_PASSWORD:', process.env.EMAIL_PASSWORD ? '✅ SET' : '❌ NOT SET');
+console.log('   NODE_ENV:', process.env.NODE_ENV || 'development');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
