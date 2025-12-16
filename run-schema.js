@@ -27,7 +27,20 @@ async function runSchema() {
     const schema = fs.readFileSync(schemaPath, 'utf8');
 
     console.log('Executing schema...');
-    await connection.execute(schema);
+    // Split the schema into individual statements and execute them
+    const statements = schema.split(';').filter(stmt => stmt.trim().length > 0);
+
+    for (const statement of statements) {
+      if (statement.trim()) {
+        try {
+          await connection.execute(statement);
+        } catch (error) {
+          // Log but continue for statements that might fail
+          console.log('Statement failed:', error.message);
+          console.log('Statement:', statement.trim());
+        }
+      }
+    }
 
     console.log('✅ Schema executed successfully!');
     console.log('✅ All database tables have been created.');

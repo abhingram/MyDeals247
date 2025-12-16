@@ -81,7 +81,7 @@ class NotificationService {
           WHERE COALESCE(np.new_deal, 1) = 1
           AND u.firebase_uid NOT IN (
             SELECT user_id FROM notifications
-            WHERE type = 'new_deal' AND data->'$.dealId' = ? AND created_at > DATE_SUB(NOW(), INTERVAL 1 HOUR)
+            WHERE type = 'new_deal' AND JSON_EXTRACT(data, '$.dealId') = ? AND created_at > DATE_SUB(NOW(), INTERVAL 1 HOUR)
           )
         `, [deal.category, deal.id]);
 
@@ -127,7 +127,7 @@ class NotificationService {
           AND COALESCE(np.price_drop, 1) = 1
           AND u.firebase_uid NOT IN (
             SELECT user_id FROM notifications
-            WHERE type = 'price_drop' AND data->'$.dealId' = ? AND created_at > DATE_SUB(NOW(), INTERVAL 1 HOUR)
+            WHERE type = 'price_drop' AND JSON_EXTRACT(data, '$.dealId') = ? AND created_at > DATE_SUB(NOW(), INTERVAL 1 HOUR)
           )
         `, [deal.id, deal.id]);
 
