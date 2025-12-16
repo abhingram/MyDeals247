@@ -385,7 +385,8 @@ INSERT INTO deal_ratings (user_id, deal_id, rating, created_at) VALUES
 ('test_user_456', 4, 3, DATE_SUB(NOW(), INTERVAL 4 HOUR)),
 ('demo_user_789', 5, 5, DATE_SUB(NOW(), INTERVAL 5 HOUR)),
 ('admin_user_123', 6, 4, DATE_SUB(NOW(), INTERVAL 6 HOUR)),
-('test_user_456', 7, 5, DATE_SUB(NOW(), INTERVAL 7 HOUR));
+('test_user_456', 7, 5, DATE_SUB(NOW(), INTERVAL 7 HOUR))
+ON DUPLICATE KEY UPDATE rating=VALUES(rating), created_at=VALUES(created_at);
 
 -- Insert sample deal reviews
 INSERT INTO deal_reviews (user_id, deal_id, rating, title, comment, verified_purchase, helpful_votes, created_at) VALUES
@@ -393,7 +394,8 @@ INSERT INTO deal_reviews (user_id, deal_id, rating, title, comment, verified_pur
 ('test_user_456', 1, 4, 'Good value', 'Solid phone, good battery life and features.', 0, 1, DATE_SUB(NOW(), INTERVAL 1 HOUR)),
 ('demo_user_789', 2, 5, 'Best headphones ever', 'Amazing sound quality and noise cancellation.', 1, 5, DATE_SUB(NOW(), INTERVAL 2 HOUR)),
 ('admin_user_123', 3, 4, 'Great laptop', 'Perfect for work and development tasks.', 1, 2, DATE_SUB(NOW(), INTERVAL 3 HOUR)),
-('test_user_456', 4, 3, 'Good TV', 'Picture quality is excellent, worth the price.', 0, 1, DATE_SUB(NOW(), INTERVAL 4 HOUR));
+('test_user_456', 4, 3, 'Good TV', 'Picture quality is excellent, worth the price.', 0, 1, DATE_SUB(NOW(), INTERVAL 4 HOUR))
+ON DUPLICATE KEY UPDATE rating=VALUES(rating), title=VALUES(title), comment=VALUES(comment), verified_purchase=VALUES(verified_purchase), helpful_votes=VALUES(helpful_votes);
 
 -- Insert sample deal shares
 INSERT INTO deal_shares (user_id, deal_id, platform, shared_at) VALUES
@@ -402,7 +404,8 @@ INSERT INTO deal_shares (user_id, deal_id, platform, shared_at) VALUES
 ('demo_user_789', 3, 'whatsapp', DATE_SUB(NOW(), INTERVAL 2 HOUR)),
 ('admin_user_123', 4, 'linkedin', DATE_SUB(NOW(), INTERVAL 3 HOUR)),
 ('test_user_456', 5, 'email', DATE_SUB(NOW(), INTERVAL 4 HOUR)),
-('demo_user_789', 6, 'copy_link', DATE_SUB(NOW(), INTERVAL 5 HOUR));
+('demo_user_789', 6, 'copy_link', DATE_SUB(NOW(), INTERVAL 5 HOUR))
+ON DUPLICATE KEY UPDATE platform=VALUES(platform), shared_at=VALUES(shared_at);
 
 -- Insert sample analytics summary data
 INSERT INTO analytics_summary (date, total_users, new_users, total_deals, active_deals, total_views, total_clicks, total_shares, total_ratings, total_reviews, avg_rating, revenue) VALUES
