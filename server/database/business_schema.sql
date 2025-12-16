@@ -170,25 +170,5 @@ CREATE INDEX IF NOT EXISTS idx_deals_trust_score ON deals(trust_score);
 CREATE INDEX IF NOT EXISTS idx_users_is_affiliate ON users(is_affiliate);
 CREATE INDEX IF NOT EXISTS idx_users_affiliate_code ON users(affiliate_code);
 
--- Insert sample affiliate links
-INSERT INTO affiliate_links (name, original_url, affiliate_url, commission_rate, commission_type, category, store, created_by) VALUES
-('Amazon Electronics Deal', 'https://amazon.com/electronics', 'https://amazon.com/electronics?tag=deals247-20', 8.00, 'percentage', 'Electronics', 'Amazon', 'admin_user_123'),
-('Best Buy Tech Deals', 'https://bestbuy.com/tech', 'https://bestbuy.com/tech?ref=deals247', 5.00, 'percentage', 'Electronics', 'Best Buy', 'admin_user_123'),
-('Nike Running Shoes', 'https://nike.com/running', 'https://nike.com/running?ref=deals247', 6.00, 'percentage', 'Fashion', 'Nike', 'admin_user_123')
-ON DUPLICATE KEY UPDATE name=name;
-
--- Insert sample store reliability data
-INSERT INTO store_reliability (store_name, total_deals, verified_deals, total_ratings, total_reviews, avg_rating, trust_score) VALUES
-('Amazon', 50, 45, 1200, 800, 4.6, 9.2),
-('Best Buy', 30, 28, 800, 600, 4.5, 8.8),
-('Apple Store', 20, 20, 600, 400, 4.8, 9.6),
-('Nike', 25, 22, 500, 350, 4.4, 8.4),
-('Target', 35, 30, 700, 500, 4.3, 8.1)
-ON DUPLICATE KEY UPDATE store_name=store_name;
-
--- Insert sample business analytics data
-INSERT INTO business_analytics (date, total_revenue, affiliate_revenue, commission_paid, total_affiliate_clicks, total_affiliate_conversions, verified_deals_count, user_engagement_score, conversion_rate, roi_percentage, top_performing_category, top_performing_store) VALUES
-(CURDATE(), 1250.75, 850.50, 425.25, 1250, 85, 45, 8.5, 6.8, 245.0, 'Electronics', 'Amazon'),
-(DATE_SUB(CURDATE(), INTERVAL 1 DAY), 980.25, 620.00, 310.00, 980, 62, 42, 8.2, 6.3, 198.0, 'Electronics', 'Best Buy'),
-(DATE_SUB(CURDATE(), INTERVAL 2 DAY), 1100.00, 750.00, 375.00, 1100, 75, 48, 8.7, 6.8, 220.0, 'Fashion', 'Nike')
-ON DUPLICATE KEY UPDATE date=date;
+CREATE INDEX IF NOT EXISTS idx_users_is_affiliate ON users(is_affiliate);
+CREATE INDEX IF NOT EXISTS idx_users_affiliate_code ON users(affiliate_code);
