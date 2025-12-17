@@ -36,9 +36,9 @@ const testConnection = async (retries = 3) => {
   }
 };
 
-testConnection();
+// testConnection(); // Disabled to prevent startup connection attempts
 
-// Add error handling for the pool
+export default pool;
 pool.on('error', (err) => {
   console.error('Database pool error:', err);
   if (err.code === 'ECONNRESET' || err.code === 'ENOTFOUND' || err.code === 'ECONNREFUSED') {
