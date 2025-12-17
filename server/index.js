@@ -25,10 +25,8 @@ import { startNotificationScheduler } from './services/notificationScheduler.js'
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Load environment variables based on NODE_ENV
-console.log('NODE_ENV:', process.env.NODE_ENV);
-const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env';
-const envPath = path.join(__dirname, envFile);
+// Load environment variables - force production for VPS deployment
+const envPath = path.join(__dirname, '.env.production');
 dotenv.config({ path: envPath });
 
 console.log('🔧 Environment Configuration:');
@@ -85,6 +83,14 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`🚀 Server is running on http://localhost:${PORT}`);
 
-  // Start notification scheduler
-  startNotificationScheduler();
+  // Start notification scheduler asynchronously to avoid blocking server startup
+  setTimeout(() => {
+    try {
+      console.log('🔄 Starting background schedulers...');
+      startNotificationScheduler();
+    } catch (error) {
+      console.error('❌ Failed to start notification scheduler:', error.message);
+      // Don't crash the server if scheduler fails
+    }
+  }, 1000); // Small delay to ensure server is fully ready
 });
