@@ -26,3 +26,16 @@ pool.on('error', (err) => {
 });
 
 export default pool;
+
+// Test connection on startup and fail fast if DB is unavailable
+(async () => {
+  try {
+    const connection = await pool.getConnection();
+    console.log('✅ Database connection successful');
+    connection.release();
+  } catch (error) {
+    console.error('❌ Database connection failed:', error.message);
+    console.error('Full error:', error);
+    process.exit(1);
+  }
+})();
