@@ -4,10 +4,11 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = path.dirname(__dirname);
 
-// Load environment variables - force production for VPS deployment
-const envPath = path.join(__dirname, '.env.production');
+// Load environment variables - load .env.production for production, .env otherwise
+const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env';
+const envPath = path.join(__dirname, envFile);
 dotenv.config({ path: envPath });
 
 import express from 'express';
