@@ -1,14 +1,22 @@
 import mysql from 'mysql2/promise';
 
+// Validate required environment variables
+if (!process.env.DB_USER || !process.env.DB_PASSWORD) {
+  throw new Error('DB credentials missing in environment variables');
+}
+
 // Create connection pool with better error handling
 const pool = mysql.createPool({
   host: process.env.DB_HOST,
-  port: process.env.DB_PORT || 3306,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
+  user: String(process.env.DB_USER),
+  password: String(process.env.DB_PASSWORD),
   database: process.env.DB_NAME,
   waitForConnections: true,
   connectionLimit: 10,
+  queueLimit: 0,
+  connectTimeout: 60000,
+  idleTimeout: 60000,
+  enableKeepAlive: true,
   queueLimit: 0,
   connectTimeout: 60000,
   idleTimeout: 60000,
